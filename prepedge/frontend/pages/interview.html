@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interview - PrepEdge</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .interview-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .interview-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .interview-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .interview-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .interview-header p {
+            color: #666;
+        }
+        
+        .setup-section {
+            text-align: center;
+        }
+        
+        .difficulty-selector {
+            margin: 2rem 0;
+        }
+        
+        .difficulty-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .difficulty-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .difficulty-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .start-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        
+        .interview-active {
+            display: none;
+        }
+        
+        .question-section {
+            margin-bottom: 2rem;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        
+        .question-category {
+            padding: 0.25rem 0.5rem;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .question-difficulty {
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f44336;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .answer-section textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .results-section {
+            display: none;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            background: conic-gradient(#4CAF50 0deg, #f0f0f0 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .feedback-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        
+        .strengths-list, .improvements-list {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .strengths-list li {
+            color: #4CAF50;
+            margin: 0.5rem 0;
+        }
+        
+        .improvements-list li {
+            color: #ff9800;
+            margin: 0.5rem 0;
+        }
+        
+        .history-section {
+            margin-top: 2rem;
+        }
+        
+        .history-item {
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .retry-btn {
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .difficulty-buttons {
+                flex-direction: column;
+            }
+            
+            .history-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🚀 PrepEdge</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="dsa.html">DSA Tracker</a>
+            <a href="interview.html" class="active">Mock Interview</a>
+            <a href="resume.html">Resume</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="roadmap.html">Roadmap</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-welcome">Hi, <span id="user-name">User</span></span>
+            <button onclick="AuthService.logout()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="interview-container">
+        <div class="interview-card">
+            <!-- Setup Section -->
+            <div id="setup-section" class="setup-section">
+                <div class="interview-header">
+                    <h1>🎤 Mock Interview</h1>
+                    <p>Practice with real interview questions and get AI-powered feedback</p>
+                </div>
+                <div class="difficulty-selector">
+                    <h3>Select Difficulty</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                    </div>
+                </div>
+                <button class="start-btn" id="startBtn">Start Interview</button>
+                
+                <!-- History Section -->
+                <div class="history-section">
+                    <h3>📊 Recent Interviews</h3>
+                    <div id="interview-history"></div>
+                </div>
+            </div>
+            
+            <!-- Active Interview Section -->
+            <div id="interview-active" class="interview-active">
+                <div class="question-header">
+                    <span class="question-category" id="question-category">Loading...</span>
+                    <span class="question-difficulty" id="question-difficulty"></span>
+                    <span class="timer" id="timer">03:00</span>
+                </div>
+                <div class="question-text" id="question-text"></div>
+                <div class="answer-section">
+                    <textarea id="answer-input" placeholder="Type your answer here..."></textarea>
+                    <button class="submit-btn" id="submitBtn">Submit Answer</button>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div id="results-section" class="results-section">
+                <div class="interview-header">
+                    <h1>📊 Interview Results</h1>
+                </div>
+                <div class="score-circle" id="score-circle">
+                    <div class="score-inner">
+                        <div class="score-number" id="score-display">0</div>
+                        <div>/10</div>
+                    </div>
+                </div>
+                <div class="feedback-section">
+                    <h3>Feedback</h3>
+                    <p id="feedback-text"></p>
+                </div>
+                <div class="feedback-section">
+                    <h3>✅ Strengths</h3>
+                    <ul class="strengths-list" id="strengths-list"></ul>
+                </div>
+                <div class="feedback-section">
+                    <h3>⚠️ Areas for Improvement</h3>
+                    <ul class="improvements-list" id="improvements-list"></ul>
+                </div>
+                <button class="retry-btn" id="retryBtn">Try Another Interview</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/interview.js"></script>
+    <script>
+        // Add event listeners after page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('startBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const retryBtn = document.getElementById('retryBtn');
+            
+            if (startBtn) {
+                startBtn.addEventListener('click', () => InterviewManager.startInterview());
+            }
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => InterviewManager.submitAnswer());
+            }
+            if (retryBtn) {
+                retryBtn.addEventListener('click', () => InterviewManager.retryInterview());
+            }
+        });
+    </script>
+</body>
+</html>

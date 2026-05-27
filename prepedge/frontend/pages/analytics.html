@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - PrepEdge</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .analytics-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .analytics-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .analytics-card h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-box h4 {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .strength-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #4CAF50;
+            color: white;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.85rem;
+        }
+        
+        .weakness-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #ff9800;
+            color: white;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.85rem;
+        }
+        
+        .prediction-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .prediction-score {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        
+        .recommendations-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .recommendations-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .consistency-card {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .streak-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff9800;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🚀 PrepEdge</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="dsa.html">DSA Tracker</a>
+            <a href="interview.html">Mock Interview</a>
+            <a href="resume.html">Resume</a>
+            <a href="analytics.html" class="active">Analytics</a>
+            <a href="roadmap.html">Roadmap</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-welcome">Hi, <span id="user-name">User</span></span>
+            <button onclick="AuthService.logout()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="analytics-container">
+        <h1>📊 Performance Analytics</h1>
+        
+        <!-- Stats Summary -->
+        <div class="stats-summary">
+            <div class="stat-box">
+                <h4>Problems Solved</h4>
+                <div class="stat-number" id="total-solved">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Easy / Medium / Hard</h4>
+                <div class="stat-number" id="difficulty-breakdown">0 / 0 / 0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Mock Interviews</h4>
+                <div class="stat-number" id="total-interviews">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Avg Interview Score</h4>
+                <div class="stat-number" id="avg-score">0</div>
+            </div>
+        </div>
+        
+        <div class="analytics-grid">
+            <!-- Topic Performance Chart -->
+            <div class="analytics-card">
+                <h2>📈 Topic-wise Performance</h2>
+                <div class="chart-container">
+                    <canvas id="topicChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Interview Trend Chart -->
+            <div class="analytics-card">
+                <h2>🎯 Interview Score Trends</h2>
+                <div class="chart-container">
+                    <canvas id="interviewChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analytics-grid">
+            <!-- Strong Areas -->
+            <div class="analytics-card">
+                <h2>✅ Strong Areas</h2>
+                <div id="strong-areas" class="strong-areas"></div>
+            </div>
+            
+            <!-- Areas for Improvement -->
+            <div class="analytics-card">
+                <h2>⚠️ Areas for Improvement</h2>
+                <div id="weak-areas" class="weak-areas"></div>
+            </div>
+        </div>
+        
+        <div class="analytics-grid">
+            <!-- Prediction Card -->
+            <div class="analytics-card">
+                <div class="prediction-card">
+                    <div>📊 Interview Readiness Score</div>
+                    <div class="prediction-score" id="predicted-score">0%</div>
+                    <div>Based on your progress</div>
+                </div>
+                <div class="consistency-card">
+                    <div>🔥 Current Streak</div>
+                    <div class="streak-number" id="streak">0</div>
+                    <div>days of consistent practice</div>
+                </div>
+            </div>
+            
+            <!-- Recommendations -->
+            <div class="analytics-card">
+                <h2>💡 Personalized Recommendations</h2>
+                <ul class="recommendations-list" id="recommendations"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/analytics.js"></script>
+</body>
+</html>

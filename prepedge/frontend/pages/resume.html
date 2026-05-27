@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis - PrepEdge</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .resume-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .resume-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f9f9ff;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .ats-score-card {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .score-meter {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .suggestions-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .suggestions-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .resume-info {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .delete-btn {
+            padding: 0.5rem 1rem;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .upload-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        
+        .tips-section {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #e3f2fd;
+            border-radius: 10px;
+        }
+        
+        .tips-section h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+        
+        .tips-section ul {
+            padding-left: 1.5rem;
+        }
+        
+        .tips-section li {
+            margin: 0.5rem 0;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .uploading {
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🚀 PrepEdge</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="dsa.html">DSA Tracker</a>
+            <a href="interview.html">Mock Interview</a>
+            <a href="resume.html" class="active">Resume</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="roadmap.html">Roadmap</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-welcome">Hi, <span id="user-name">User</span></span>
+            <button onclick="handleLogout()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="resume-container">
+        <div class="resume-card">
+            <h1>📄 Resume Analysis</h1>
+            <p>Upload your resume to get ATS score and optimization suggestions</p>
+            
+            <!-- Upload Area -->
+            <div id="upload-area" class="upload-area" onclick="document.getElementById('resume-file').click()">
+                <div class="upload-icon">📁</div>
+                <h3>Click to upload your resume</h3>
+                <p>Supported formats: PDF, DOC, DOCX (Max 5MB)</p>
+                <input type="file" id="resume-file" class="file-input" accept=".pdf,.doc,.docx">
+            </div>
+            
+            <!-- Analysis Results -->
+            <div id="analysis-results" style="display: none;">
+                <div class="ats-score-card">
+                    <h2>ATS Score</h2>
+                    <div class="score-meter">
+                        <canvas id="score-canvas" width="200" height="200"></canvas>
+                        <div class="score-value" id="ats-score">0</div>
+                    </div>
+                </div>
+                
+                <div id="resume-info" class="resume-info">
+                    <span>📄 <span id="resume-filename"></span></span>
+                    <button class="delete-btn" onclick="resumeManager.deleteResume()">Delete Resume</button>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3>📊 Suggestions for Improvement</h3>
+                    <ul class="suggestions-list" id="suggestions-list"></ul>
+                </div>
+            </div>
+            
+            <!-- Tips Section -->
+            <div class="tips-section">
+                <h3>💡 Tips to Improve Your Resume</h3>
+                <ul>
+                    <li>Use action verbs (e.g., "Developed", "Led", "Created")</li>
+                    <li>Include quantifiable achievements (e.g., "Improved performance by 20%")</li>
+                    <li>Tailor your resume to each job description</li>
+                    <li>Keep formatting simple and ATS-friendly</li>
+                    <li>Include relevant keywords from job postings</li>
+                    <li>Proofread for spelling and grammar errors</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/resume.js"></script>
+</body>
+</html>

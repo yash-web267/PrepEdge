@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap - PrepEdge</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .roadmap-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .roadmap-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .generate-btn {
+            padding: 1rem 2rem;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+        
+        .week-card {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .week-card.completed {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .week-number {
+            position: absolute;
+            left: -2rem;
+            top: 1rem;
+            width: 2rem;
+            height: 2rem;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .week-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .week-date {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        .topics-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .topic-tag {
+            padding: 0.25rem 0.5rem;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .tasks-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        
+        .tasks-list li {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .task-text.completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .resources-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        
+        .progress-overview {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .overall-progress {
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+        
+        .empty-roadmap {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+        }
+        
+        .btn-primary {
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .badge-success {
+            background: #4CAF50;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #c62828;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🚀 PrepEdge</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="dsa.html">DSA Tracker</a>
+            <a href="interview.html">Mock Interview</a>
+            <a href="resume.html">Resume</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="roadmap.html" class="active">Roadmap</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-welcome">Hi, <span id="user-name">User</span></span>
+            <button onclick="AuthService.logout()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="roadmap-container">
+        <div class="roadmap-header">
+            <h1>🗺️ Your Personalized Roadmap</h1>
+            <p>Based on your progress and weak areas</p>
+            <button class="generate-btn" id="generateBtn">🚀 Generate New Roadmap</button>
+        </div>
+        
+        <div id="roadmap-content">
+            <div class="empty-roadmap">
+                <p>Click "Generate New Roadmap" to create your personalized preparation plan.</p>
+            </div>
+        </div>
+        
+        <div class="progress-overview" id="progress-overview" style="display: none;">
+            <h3>📊 Overall Progress</h3>
+            <div class="overall-progress">
+                <div class="progress-fill" id="overall-progress-fill" style="width: 0%"></div>
+            </div>
+            <p id="progress-text">0% completed</p>
+            <p id="estimated-completion"></p>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/roadmap.js"></script>
+</body>
+</html>

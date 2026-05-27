@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PrepEdge</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🚀 PrepEdge</div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="dsa.html">DSA Tracker</a>
+            <a href="interview.html">Mock Interview</a>
+            <a href="resume.html">Resume</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="roadmap.html">Roadmap</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-welcome">Hi, <span id="user-name">Loading...</span></span>
+            <button onclick="handleLogout()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3>Problems Solved</h3>
+                    <div class="stat-number" id="total-problems">0</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="problems-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-info">
+                    <h3>Interview Score</h3>
+                    <div class="stat-number" id="avg-score">0</div>
+                    <div class="stat-label">/10 average</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📄</div>
+                <div class="stat-info">
+                    <h3>Resume Score</h3>
+                    <div class="stat-number" id="resume-score">0</div>
+                    <div class="stat-label">ATS score</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-info">
+                    <h3>Readiness</h3>
+                    <div class="stat-number" id="readiness">0</div>
+                    <div class="stat-label">% prepared</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h2>Topic-wise Progress</h2>
+                <canvas id="topicChart" width="400" height="200"></canvas>
+            </div>
+            
+            <div class="chart-card">
+                <h2>Weekly Activity</h2>
+                <canvas id="activityChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity-card">
+            <h2>Recent Activity</h2>
+            <div id="recent-activity" class="activity-list"></div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

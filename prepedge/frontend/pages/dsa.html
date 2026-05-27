@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Tracker - PrepEdge</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .dsa-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-box h4 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .topic-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .topic-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .topic-progress {
+            color: #4CAF50;
+            font-weight: 500;
+        }
+        
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .problem-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .problem-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .problem-item.solved {
+            background: #e8f5e9;
+            opacity: 0.8;
+        }
+        
+        .problem-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .problem-name {
+            font-weight: 500;
+        }
+        
+        .problem-difficulty {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .difficulty-easy {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .difficulty-medium {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+        
+        .difficulty-hard {
+            background: #ffebee;
+            color: #f44336;
+        }
+        
+        .solve-btn {
+            padding: 0.5rem 1rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .solve-btn:hover {
+            background: #45a049;
+        }
+        
+        .solved-badge {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .leetcode-link {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .leetcode-link:hover {
+            text-decoration: underline;
+        }
+        
+        .streak-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+        }
+        
+        .streak-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .problem-item {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .problem-info {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🚀 PrepEdge</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="dsa.html" class="active">DSA Tracker</a>
+            <a href="interview.html">Mock Interview</a>
+            <a href="resume.html">Resume</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="roadmap.html">Roadmap</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-welcome">Hi, <span id="user-name">User</span></span>
+            <button onclick="handleLogout()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dsa-container">
+        <h1>📚 DSA Preparation Tracker</h1>
+        
+        <!-- Statistics Summary -->
+        <div class="stats-summary">
+            <div class="stat-box">
+                <h4>Total Solved</h4>
+                <div class="stat-value" id="total-solved">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Easy</h4>
+                <div class="stat-value" id="easy-solved">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Medium</h4>
+                <div class="stat-value" id="medium-solved">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Hard</h4>
+                <div class="stat-value" id="hard-solved">0</div>
+            </div>
+            <div class="stat-box streak-card">
+                <h4>🔥 Current Streak</h4>
+                <div class="streak-number" id="streak">0</div>
+                <div>days</div>
+            </div>
+        </div>
+        
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All Topics</button>
+            <button class="filter-btn" data-filter="arrays">Arrays</button>
+            <button class="filter-btn" data-filter="strings">Strings</button>
+            <button class="filter-btn" data-filter="linkedlist">Linked Lists</button>
+            <button class="filter-btn" data-filter="trees">Trees</button>
+            <button class="filter-btn" data-filter="graphs">Graphs</button>
+            <button class="filter-btn" data-filter="dp">Dynamic Programming</button>
+        </div>
+        
+        <!-- Problems Container -->
+        <div id="problems-container"></div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/dsa.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .chart-card canvas {
+        height: 200px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .auth-card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 0 0.5rem;
+    }
+    
+    .stat-icon {
+        font-size: 1.5rem;
+    }
+    
+    .stat-info h3 {
+        font-size: 0.8rem;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .logout-btn,
+    .action-btn {
+        display: none;
+    }
+    
+    .dashboard-container {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .stat-card {
+        break-inside: avoid;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a1a2e;
+    }
+    
+    .stat-card,
+    .chart-card,
+    .recent-activity-card,
+    .auth-card {
+        background: #16213e;
+        color: #eee;
+    }
+    
+    .stat-card h3,
+    .chart-card h2 {
+        color: #ccc;
+    }
+    
+    .activity-item {
+        background: #1f2a4a;
+    }
+    
+    .form-group input {
+        background: #1f2a4a;
+        color: white;
+        border-color: #2a3a6e;
+    }
+}
