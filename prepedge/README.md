@@ -37,5 +37,5 @@ PrepEdge is a comprehensive full-stack web application designed to help students
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/prepedge.git
+git clone https://github.com/yash-web267/prepedge.git
 cd prepedge
